@@ -2,7 +2,7 @@
 //= require jsoneditor/asset/jsonlint/jsonlint.js
 
 ;(function(window, $) {
-  $(function() {
+  $(document).on('ready page:load', function() {
     $('div.jsoneditor-wrap').each(function(i,wrap){
       var container = $(wrap)[0];
       var textarea = $($(wrap).find('textarea'));
