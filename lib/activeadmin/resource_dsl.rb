@@ -3,23 +3,25 @@ require 'activeadmin'
 
 module ActiveAdmin
   class ResourceDSL
-    def hstore_editor
+    COLUMN_TYPES = %i[hstore jsonb json].freeze
+    def hstore_editor(namespace: nil)
       before_save do |object,args|
-        request_namespace = object.class.name.underscore.gsub('/', '_')
+        request_namespace = namespace || object.class.name.underscore.gsub('/', '_')
+
         if params.key? request_namespace
-          object.class.columns_hash.select {|key,attr| attr.type == :hstore}.keys.each do |key|
+          object.class.columns_hash.select {|key,attr| COLUMN_TYPES.include?(attr.type)}.keys.each do |key|
             if params[request_namespace].key? key
               json_data = params[request_namespace][key]
               data = if json_data == 'null' or json_data.blank?
-                {}
-              else
-                JSON.parse(json_data)
-              end
+                       nil
+                     else
+                       JSON.parse(json_data)
+                     end
               object.attributes = {key => data}
             end
           end
         else
-          raise ActionController::ParameterMissing, request_namespace
+          raise ActionController::ParameterMissing, "Hstore Editor either takes in a namespace keyword argument or infers the resouce class name from Model#class. The current classname #{request_namespace} is invalid"
         end
       end
     end
