@@ -2,7 +2,12 @@
 //= require jsoneditor/asset/jsonlint/jsonlint.js
 
 ;(function(window, $) {
-  $(document).on('ready page:load', function() {
+  $(document).ready(function() {
+    createEditor();
+    $(document).on('page:load turbolinks:load', createEditor);
+  });
+
+  function createEditor() {
     $('div.jsoneditor-wrap').each(function(i,wrap){
       var container = $(wrap)[0];
       var textarea = $($(wrap).find('textarea'));
@@ -15,5 +20,5 @@
       };
       editor = new JSONEditor(container, options,JSON.parse(textarea.val()));
     });
-  });
+  }
 })(window, jQuery);
