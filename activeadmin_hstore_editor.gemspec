@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
 
   spec.required_rubygems_version = ">= 1.3.6"
   spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_dependency "railties", ">= 3.0", "< 5.1"
+  spec.add_dependency "railties", ">= 3.0", "< 6"
   #spec.add_development_dependency "rake", "~> 0"
   #spec.add_dependency "active_admin", "~> 1.0.0"
 end
